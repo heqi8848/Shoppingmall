@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Grocery Store a Ecommerce Online Shopping Category Flat Bootstrap Responsive Website Template | Home :: w3layouts</title>
+        <!-- for-mobile-apps -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="keywords" content="Grocery Store Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+        <script type="application/x-javascript">
+            addEventListener("load", function() {
+                setTimeout(hideURLbar, 0);
+            }, false);
+
+            function hideURLbar() {
+                window.scrollTo(0, 1);
+            }
+        </script>
+        <!-- //for-mobile-apps -->
+        <link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="toastr/toastr.css" rel="stylesheet" />
+        <!-- font-awesome icons -->
+        <link href="css/font-awesome.css" rel="stylesheet" type="text/css" media="all" />
+        <!-- //font-awesome icons -->
+        <!-- js -->
+        <script src="js/jquery-1.11.1.min.js"></script>
+        <!-- //js -->
+        <!--<link href='//fonts.googleapis.com/css?family=Ubuntu:400,300,300italic,400italic,500,500italic,700,700italic' rel='stylesheet' type='text/css'>
+        <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic' rel='stylesheet' type='text/css'>-->
+        <!-- start-smoth-scrolling -->
+        <script type="text/javascript" src="js/move-top.js"></script>
+        <script type="text/javascript" src="js/easing.js"></script>
+        <script src="toastr/toastr.js"></script>
+        <script type="text/javascript">
+            jQuery(document).ready(function($) {
+                $(".scroll").click(function(event) {
+                    event.preventDefault();
+                    $('html,body').animate({
+                        scrollTop: $(this.hash).offset().top
+                    }, 1000);
+                });
+            });
+        </script>
+        <!-- start-smoth-scrolling -->
+    </head>
+
+    <body>
+        <!-- header -->
+        <div class="agileits_header">
+            <!--<div class="w3l_offers">
+                <a>特别供应</a>
+            </div>-->
+            <div class="w3l_search">
+                <!--<form action="#" method="post">-->
+                <input type="text" id="searchProduct" name="Product" value="查找商品" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '查找商品';}" required="">
+                <input type="submit" value=" " onclick="onSearchByName()">
+                <!--</form>-->
+            </div>
+            <div class="product_list_header">
+                <form action="#" method="post" class="last">
+                    <fieldset>
+                        <input type="hidden" name="cmd" value="_cart" />
+                        <input type="hidden" name="display" value="1" />
+                        <input type="submit" name="submit" value="View your cart" class="button" />
+                    </fieldset>
+                </form>
+            </div>
+            <!--<div class="w3l_header_right">
+                <ul>
+                    <li class="dropdown profile_details_drop">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user" aria-hidden="true"></i><span class="caret"></span></a>
+                        <div class="mega-dropdown-menu">
+                            <div class="w3ls_vegetables">
+                                <ul class="dropdown-menu drp-mnu">
+                                    <li>
+                                        <a onclick="onClkLogin()" style="cursor: pointer;">Login</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>-->
+
+            <div class="w3l_header_right1">
+                <h2><a  onclick="buyAllSelect()" style="cursor: pointer;">点击支付</a></h2>
+            </div>
+            <div id="loginuser" style="color:cornflowerblue;float:right;font-size: 20px;margin-top: 8px;margin-right: 50px;cursor: pointer;" onclick="onClkLogin()">登录</div>
+            <div class="clearfix"> </div>
+        </div>
+        <!-- script-for sticky-nav -->
+        <script>
+            $(document).ready(function() {
+                var navoffeset = $(".agileits_header").offset().top;
+                $(window).scroll(function() {
+                    var scrollpos = $(window).scrollTop();
+                    if(scrollpos >= navoffeset) {
+                        $(".agileits_header").addClass("fixed");
+                    } else {
+                        $(".agileits_header").removeClass("fixed");
+                    }
+                });
+
+            });
+        </script>
+
+        <div class="w3_login">
+            <div class="w3_login_module">
+                <div class="module form-module">
+                    <div class="toggle"><i class="fa fa-times fa-pencil"></i>
+                    </div>
+                    <div class="form">
+                        <h2>登录</h2>
+                        <!--<form action="#" method="post">-->
+                        <input id="username" type="text" name="Username" placeholder="Username" required=" ">
+                        <input id="paasword" type="password" name="Password" placeholder="Password" required=" ">
+                        <input type="submit" value="Login" onclick="onClkSubmit()">
+                        <!--</form>-->
+                    </div>
+                </div>
+            </div>
+            <script>
+                $(".w3_login").hide();
+                var userinfo = {
+                    "id": -1,
+                    "name": "apm",
+                    "password": "123456"
+                };
+                function onClkLogin() {
+                    
+                    if(userinfo.id > -1)
+                    {
+                        return;
+                    }
+                    $(".w3_login").show();
+
+                }
+
+
+                function onClkSubmit() {
+                    var username = $("#username").val();
+                    var paasword = $("#paasword").val();
+                    $.ajax({
+                        type: 'POST',
+                        url: "/user/login",
+                        data: JSON.stringify({
+                            "id": 0,
+                            "name": username,
+                            "password": paasword
+                        }),
+                        success: function a(data) {
+                            console.log(data)
+
+                            if(data.id > -1) {
+                                userinfo = data;
+                                $(".w3_login").hide();
+                                $("#loginuser").text(data.name + " 已登录");
+                                toastr.success('登录成功！');
+                            } else {
+                                toastr.error("登录失败！");
+                            }
+
+                        },
+                        contentType: "application/json",
+                        async: true
+                    })
+                }
+            </script>
+        </div>
+
+        <!-- //script-for sticky-nav -->
+        <div class="logo_products">
+            <div class="container">
+                <div class="w3ls_logo_products_left">
+                    <h1><a ><span>Phone</span> Store</a></h1>
+                </div>
+                <!--<div class="w3ls_logo_products_left1">
+                    <ul class="phone_email">
+                        <li><i class="fa fa-phone" aria-hidden="true"></i>(+027) 87260059</li>
+                        <li><i class="fa fa-envelope-o" aria-hidden="true"></i>
+                            <a>wdwang@163.com</a>
+                        </li>
+                    </ul>
+                </div>-->
+                <div class="clearfix"> </div>
+            </div>
+        </div>
+        <!-- //header -->
+        <!-- banner -->
+        <div class="w3l_banner_nav_right" style="display: none;">
+            <section class="slider">
+                <div class="flexslider">
+                    <ul class="slides">
+                        <li>
+                            <div class="w3l_banner_nav_right_banner">
+                                <h3>Make your <span>food</span> with Spicy.</h3>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="w3l_banner_nav_right_banner1">
+                                <h3>Make your <span>food</span> with Spicy.</h3>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="w3l_banner_nav_right_banner2">
+                                <h3>upto <i>50%</i> off.</h3>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+            <!-- flexSlider -->
+            <link rel="stylesheet" href="css/flexslider.css" type="text/css" media="screen" property="" />
+            <script defer src="js/jquery.flexslider.js"></script>
+            <script type="text/javascript">
+                $(window).load(function() {
+                    $('.flexslider').flexslider({
+                        animation: "slide",
+                        start: function(slider) {
+                            $('body').removeClass('loading');
+                        }
+                    });
+                });
+            </script>
+            <!-- //flexSlider -->
+        </div>
+        </div>
+        <!-- banner -->
+        <!-- top-brands -->
+        <div class="top-brands">
+            <div class="container">
+                <h3>热销商品</h3>
+                <div class="agile_top_brands_grids" id="phoneList">
+
+                    <div class="clearfix"> </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="js/bootstrap.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $(".dropdown").hover(
+                    function() {
+                        $('.dropdown-menu', this).stop(true, true).slideDown("fast");
+                        $(this).toggleClass('open');
+                    },
+                    function() {
+                        $('.dropdown-menu', this).stop(true, true).slideUp("fast");
+                        $(this).toggleClass('open');
+                    }
+                );
+            });
+        </script>
+        <script src="js/minicart.js"></script>
+        <script>
+            var product2image = {
+                product1: "428_428_1503976624403mp.jpg",
+                "product2": "428_428_1503399072486mp.jpg",
+                "product3": "428_428_1504748150715mp.jpg",
+                "product4": "428_428_1504748540340mp.jpg"
+            };
+
+            var prodectName2Id = {};
+
+            function constructProductDom(phoneList) {
+                for(var i = 0; i < phoneList.length; i++) {
+                    var data = phoneList[i];
+                    var price = data.price;
+                    var phoneName = data.name;
+                    var discount = data.discount;
+                    var image = product2image[phoneName];
+                    prodectName2Id[phoneName] = data.id;
+                    var strOffer = '<div class="agile_top_brand_left_grid_pos">' +
+                        '<img src="images/offer.png" alt=" " class="img-responsive" />' +
+                        '</div>';
+                    if(data.isOffer === 0) {
+                        strOffer = "";
+                    }
+                    var contentStr =
+                        '<div class="col-md-3 top_brand_left">' +
+                        '<div class="hover14 column">' +
+                        '<div class="agile_top_brand_left_grid">' +
+                        strOffer +
+                        '<div class="agile_top_brand_left_grid1">' +
+                        '<figure>' +
+                        '<div class="snipcart-item block">' +
+                        '<div class="snipcart-thumb">' +
+                        '<a ><img title=" " alt=" " src="images/' + image + '" height="121" width="120"/></a>' +
+                        '<p>' + phoneName + '</p>' +
+                        '<h4>￥' + (price - discount) + '<span>￥' + price + '</span></h4>' +
+                        '</div>' +
+                        '<div class="snipcart-details top_brand_home_details">' +
+                        '<form action="#" method="post">' +
+                        '<fieldset>' +
+                        '<input type="hidden" name="cmd" value="_cart" />' +
+                        '<input type="hidden" name="add" value="1" />' +
+                        '<input type="hidden" name="business" value=" " />' +
+                        '<input type="hidden" name="item_name" value="' + phoneName + '" />' +
+                        '<input type="hidden" name="amount" value="' + price + '" />' +
+                        '<input type="hidden" name="discount_amount" value="' + discount + '" />' +
+                        '<input type="hidden" name="currency_code" value="CNY" />' +
+                        '<input type="hidden" name="return" value=" " />' +
+                        '<input type="hidden" name="cancel_return" value=" " />' +
+                        '<input type="submit" name="submit" value="加入购物车" class="button" />' +
+                        '</fieldset>' +
+                        '</form>' +
+                        '</div>' +
+                        '</div>' +
+                        '</figure>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>';
+
+                    $("#phoneList").append(contentStr);
+                }
+            }
+            $(document).ready(function() {
+                var phoneList = [{
+                    name: "product1",
+                    price: 2299,
+                    discount: 400,
+                    isOffer: 0
+                }, {
+                    name: "product2",
+                    price: 4299,
+                    discount: 700,
+                    isOffer: 0
+                }, {
+                    name: "product3",
+                    price: 2899,
+                    discount: 400,
+                    isOffer: 1
+                }, {
+                    name: "product4",
+                    price: 1699,
+                    discount: 400,
+                    isOffer: 1
+                }];
+
+                constructProductDom(phoneList);
+
+                $.ajax({
+                    type: 'GET',
+                    url: "/product/searchAll",
+                    success: function a(data) {
+                        constructProductDom(data);
+                    },
+                    contentType: "application/json",
+                    async: false
+                })
+                // Mini Cart
+                paypal.minicart.render();
+                paypal.minicart.cart.on('checkout', function(evt) {
+                    var items, len, i;
+
+                    if(this.subtotal() > 0) {
+                        items = this.items();
+
+                        for(i = 0, len = items.length; i < len; i++) {
+                            items[i].set('shipping', 0);
+                            items[i].set('shipping2', 0);
+                        }
+                    }
+                });
+
+            });
+
+            function onSearchByName() {
+                var searchText = $("#searchProduct").val();
+                $.get("/product/search?productName=" + searchText, function(data) {
+                    console.log(data);
+                    $("#phoneList").empty();
+                    constructProductDom([data]);
+                })
+            }
+
+            function buyAllSelect() {;
+                console.log(paypal.minicart.cart.items());
+                var idList = [];
+                var itemArray = paypal.minicart.cart.items();
+                for(var i = 0; i < itemArray.length; i++) {
+                    var id = prodectName2Id[itemArray[i]._data.item_name];
+                    idList.push(id);
+                }
+
+                $.ajax({
+                    type: 'POST',
+                    url: "/product/buy/0",
+                    data: JSON.stringify({
+                        user: userinfo,
+                        productidList: idList
+                    }),
+                    success: function a(data) {
+                        console.log(data);
+                        paypal.minicart.cart.destroy();
+                        toastr.success('购买成功！');
+                    },
+                    contentType: "application/json",
+                    async: true
+                });
+            }
+        </script>
+    </body>
+
+</html>

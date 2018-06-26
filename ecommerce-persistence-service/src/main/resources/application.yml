@@ -1,0 +1,45 @@
+server:
+  port: 8080
+
+logging:
+  level:
+    root: INFO
+    com.huawei: DEBUG
+
+users-server:
+  host: user-service
+  port: 8080
+  
+products-server:
+  host: products-service
+  port: 8080
+  
+payment-server:
+  host: payment-service
+  port: 8080
+  
+persistence-server:
+  host: dao-service
+  port: 8080
+  mapping: /persistence
+
+workload: 10
+
+mysql:
+  host: 49.4.10.131
+  db: ShoppingMallDB
+  port: 13306
+  user: apm
+  pass: paasapm
+  
+spring:
+  redis:
+    database: 0
+    host: 49.4.10.131
+    port: 6379
+    pool: 
+      max-active: 8
+      max-wait: -1
+      max-idle: 8
+      min-idle: 0
+      timeout: 0

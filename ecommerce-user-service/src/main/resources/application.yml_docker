@@ -1,0 +1,19 @@
+server:
+  port: 8080
+
+logging:
+  level:
+    root: INFO
+    com.huawei: DEBUG
+
+persistence-server:
+  host: dao-service
+  port: 8080
+  mapping: /persistence
+
+workload: 10
+
+mysql:
+  host: ShoppingMallDB
+  user: apm
+  pass: paasapm

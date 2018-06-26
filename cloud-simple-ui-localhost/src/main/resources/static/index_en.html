@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>demo</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="keywords" content="demo" />
+        <script type="application/x-javascript">
+            addEventListener("load", function() {
+                setTimeout(hideURLbar, 0);
+            }, false);
+
+            function hideURLbar() {
+                window.scrollTo(0, 1);
+            }
+        </script>
+        <link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="toastr/toastr.css" rel="stylesheet" />
+        <link href="css/font-awesome.css" rel="stylesheet" type="text/css" media="all" />
+        <script src="js/jquery-1.11.1.min.js"></script>
+        <script type="text/javascript" src="js/move-top.js"></script>
+        <script type="text/javascript" src="js/easing.js"></script>
+        <script src="toastr/toastr.js"></script>
+        <script type="text/javascript">
+            jQuery(document).ready(function($) {
+                $(".scroll").click(function(event) {
+                    event.preventDefault();
+                    $('html,body').animate({
+                        scrollTop: $(this.hash).offset().top
+                    }, 1000);
+                });
+            });
+        </script>
+
+        <link href="dist/css/bootstrap3/bootstrap-switch.css" rel="stylesheet">
+        <link href="css/highlight.css" rel="stylesheet">
+        <link href="css/main.css" rel="stylesheet">
+        <script src="dist/js/bootstrap-switch.js"></script>
+        <script src="js/highlight.js"></script>
+        <script src="js/main.js"></script>
+        <!-- start-smoth-scrolling -->
+    </head>
+
+    <body>
+        <!-- header -->
+        <div class="agileits_header" style="height: 50px;">
+            <div class="clearfix"> </div>
+        </div>
+        <!-- script-for sticky-nav -->
+        <script>
+            $(document).ready(function() {
+                var navoffeset = $(".agileits_header").offset().top;
+                $(window).scroll(function() {
+                    var scrollpos = $(window).scrollTop();
+                    if(scrollpos >= navoffeset) {
+                        $(".agileits_header").addClass("fixed");
+                    } else {
+                        $(".agileits_header").removeClass("fixed");
+                    }
+                });
+
+            });
+        </script>
+
+        <!--<div class="w3_login">
+            <div class="w3_login_module">
+                <div class="module form-module">
+                    <div class="toggle"><i class="fa fa-pencil"></i>
+                    </div>
+                    <div class="form">
+                        <h2>登录</h2>
+                        <input id="username" type="text" name="Username" placeholder="Username" required=" ">
+                        <input id="paasword" type="password" name="Password" placeholder="Password" required=" ">
+                        <input type="submit" value="Login" onclick="onClkSubmit()">
+                    </div>
+                </div>
+            </div>
+                   </div>-->
+        <script>
+            $(".w3_login").hide();
+            var userinfo = {
+                "id": -1,
+                "name": "apm",
+                "password": "123456"
+            };
+
+            function onClkLogin() {
+                if(userinfo.id > -1) {
+                    return;
+                }
+                $('#myModal').modal();
+            }
+
+            function onClkLogout() {
+                window.localStorage.removeItem("demologin");
+                $(".product_list_header_wwd_logout").hide();
+                $(".product_list_header_wwd_login").show();
+                $("#loginuser").hide();
+                userinfo.id = -1;
+            }
+
+            //          var userStr = window.localStorage.getItem("demologin");
+            //          if(userStr !== null) {
+            //              var userArr = userStr.split(",");
+            //              userinfo.id = parseInt(userArr[0]);
+            //              userinfo.name = userArr[1];
+            //              userinfo.password = userArr[2];
+            //              $("#loginuser").text(userinfo.name);
+            //              $("#loginuser").css({
+            //                  "color": "seagreen",
+            //                  "cursor": "auto"
+            //              });
+            //          }
+
+            function onClkSubmit() {
+                var username = $("#username").val();
+                var paasword = $("#paasword").val();
+                $.ajax({
+                    type: 'POST',
+                    url: "/user/login",
+                    data: JSON.stringify({
+                        "id": 0,
+                        "name": username,
+                        "password": paasword
+                    }),
+                    success: function a(data) {
+                        console.log(data)
+
+                        if(data.id > -1) {
+                            userinfo = data;
+                            $('#myModal').modal('hide');
+                            $("#loginuser").text(data.name);
+                            toastr.success('Login Successful!');
+                            var str = data.id + "," + data.name + "," + data.password;
+                            window.localStorage.setItem("demologin", str);
+                            $(".product_list_header_wwd_logout").show();
+                            $(".product_list_header_wwd_login").hide();
+
+                            $("#loginuser").show();
+                        } else {
+                            toastr.error("Login Failed!");
+                            $('#myModal').modal('hide');
+                        }
+
+                    },
+                    error: function() {
+                        toastr.error("Request Failure!");
+                        $('#myModal').modal('hide');
+                    },
+                    contentType: "application/json",
+                    async: true
+                })
+            }
+        </script>
+
+        <!-- //script-for sticky-nav -->
+        <div class="logo_products">
+            <div class="container">
+                <div class="w3ls_logo_products_left">
+                    <h1><a ><span>Phone</span> Store</a></h1>
+                </div>
+                <!--<div class="w3ls_logo_products_left1">
+                    <ul class="phone_email">
+                        <li><i class="fa fa-phone" aria-hidden="true"></i>(+027) 87260059</li>
+                        <li><i class="fa fa-envelope-o" aria-hidden="true"></i>
+                            <a>wdwang@163.com</a>
+                        </li>
+                    </ul>
+                </div>-->
+
+                <div class="w3l_search">
+                    <input type="text" id="searchProduct" name="Product" value="Search" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Search';}" required="">
+                    <input type="submit" value=" " onclick="onSearchByName()">
+                </div>
+
+                <div id="loginuser" style="color:cornflowerblue;float:left;font-size: 20px;margin-top: 35px;margin-left: 30px;cursor: pointer;" onclick="onClkLogin()">Login</div>
+
+                <div class="product_list_header_wwd_logout" style="float: left;margin-top: 32px;margin-left:20px ;">
+                    <!--<fieldset>-->
+                    <input type="submit" name="submit" value="Quit" onclick="onClkLogout()" class="button" />
+                    <!--</fieldset>-->
+                </div>
+
+                <div class="product_list_header_wwd_login" style="float: left;margin-top: 32px;margin-left:20px ;">
+                    <!--<fieldset>-->
+                    <input type="submit" name="submit" value="Login" onclick="onClkLogin()" class="button" />
+                    <!--</fieldset>-->
+                </div>
+
+                <div class="product_list_header">
+                    <form action="#" method="post" class="last">
+                        <fieldset>
+                            <input type="hidden" name="cmd" value="_cart" />
+                            <input type="hidden" name="display" value="1" />
+                            <input type="submit" name="submit" value="Check Cart" class="button" />
+                        </fieldset>
+                    </form>
+                </div>
+
+                <div class="product_list_header_wwd" style="float: left;margin-top: 32px;margin-left:20px ;">
+                    <!--<fieldset>-->
+                    <input type="submit" name="submit" value="Automate" onclick="onClkSettingAuto()" class="button" />
+                    <!--</fieldset>-->
+                </div>
+
+                <!--                <div style="float:left;margin-top: 35px;;margin-left: 15px;cursor: pointer;height:30px" onclick="onClkSettingAuto()"> <img src="images/settings_16.832px_1182692_easyicon.net.png"></div>-->
+                <!--<input id="switch-animate" type="checkbox" checked="checked" style="float: left;">-->
+                <!--<div class="w3l_header_right1">
+                <h2><a  onclick="buyAllSelect()" style="cursor: pointer;">点击支付</a></h2>
+            </div>-->
+                <div class="clearfix"> </div>
+            </div>
+        </div>
+        <!-- //header -->
+        <!-- banner -->
+        <div class="w3l_banner_nav_right" style="display: none;">
+            <section class="slider">
+                <div class="flexslider">
+                    <ul class="slides">
+                        <li>
+                            <div class="w3l_banner_nav_right_banner">
+                                <h3>Make your <span>food</span> with Spicy.</h3>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="w3l_banner_nav_right_banner1">
+                                <h3>Make your <span>food</span> with Spicy.</h3>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="w3l_banner_nav_right_banner2">
+                                <h3>upto <i>50%</i> off.</h3>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+            <!-- flexSlider -->
+            <link rel="stylesheet" href="css/flexslider.css" type="text/css" media="screen" property="" />
+            <script defer src="js/jquery.flexslider.js"></script>
+            <script type="text/javascript">
+                $(window).load(function() {
+                    $('.flexslider').flexslider({
+                        animation: "slide",
+                        start: function(slider) {
+                            $('body').removeClass('loading');
+                        }
+                    });
+                });
+            </script>
+            <!-- //flexSlider -->
+        </div>
+        </div>
+        <!-- banner -->
+        <!-- top-brands -->
+        <div class="top-brands">
+            <div class="container">
+                <h3>Hot Selling</h3>
+                <div class="agile_top_brands_grids" id="phoneList">
+
+                    <div class="clearfix"> </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="js/bootstrap.min.js"></script>
+        <script>
+            $(document).ready(function() {
+
+                var userStr = window.localStorage.getItem("demologin");
+                if(userStr !== null) {
+                    var userArr = userStr.split(",");
+                    userinfo.id = parseInt(userArr[0]);
+                    userinfo.name = userArr[1];
+                    userinfo.password = userArr[2];
+                    $("#loginuser").text(userinfo.name);
+                    $("#loginuser").css({
+                        "color": "seagreen",
+                        "cursor": "auto"
+                    });
+
+                    $(".product_list_header_wwd_logout").show();
+                    $(".product_list_header_wwd_login").hide();
+                } else {
+                    $(".product_list_header_wwd_logout").hide();
+                    $(".product_list_header_wwd_login").show();
+                    $("#loginuser").hide();
+                }
+
+                $(".dropdown").hover(
+                    function() {
+                        $('.dropdown-menu', this).stop(true, true).slideDown("fast");
+                        $(this).toggleClass('open');
+                    },
+                    function() {
+                        $('.dropdown-menu', this).stop(true, true).slideUp("fast");
+                        $(this).toggleClass('open');
+                    }
+                );
+            });
+        </script>
+        <script src="js/minicart_en.js"></script>
+        <script>
+            var product2image = {
+                product1: "428_428_1503976624403mp.jpg",
+                "product2": "428_428_1503399072486mp.jpg",
+                "product3": "428_428_1504748150715mp.jpg",
+                "product4": "428_428_1504748540340mp.jpg"
+            };
+
+            var prodectName2Id = {};
+
+            function constructProductDom(phoneList) {
+                for(var i = 0; i < phoneList.length; i++) {
+                    var data = phoneList[i];
+                    var id = data.id;
+                    var price = data.price;
+                    var phoneName = data.name;
+                    var discount = data.discount;
+                    var image = product2image[phoneName];
+                    prodectName2Id[phoneName] = data.id;
+                    var strOffer = '<div class="agile_top_brand_left_grid_pos">' +
+                        '<img src="images/offer.png" alt=" " class="img-responsive" />' +
+                        '</div>';
+                    if(data.isOffer === 0) {
+                        strOffer = "";
+                    }
+                    var divId = "product_" + id;
+                    var contentStr =
+                        '<div id="' + divId + '"class="col-md-3 top_brand_left">' +
+                        '<div class="hover14 column">' +
+                        '<div class="agile_top_brand_left_grid">' +
+                        strOffer +
+                        '<div class="agile_top_brand_left_grid1">' +
+                        '<figure>' +
+                        '<div class="snipcart-item block">' +
+                        '<div class="snipcart-thumb">' +
+                        '<a ><img title=" " alt=" " src="images/' + image + '" height="121" width="120"/></a>' +
+                        '<p>' + phoneName + '</p>' +
+                        '<h4>￥' + (price - discount) + '<span>￥' + price + '</span></h4>' +
+                        '</div>' +
+                        '<div class="snipcart-details top_brand_home_details">' +
+                        '<form action="#" method="post">' +
+                        '<fieldset>' +
+                        '<input type="hidden" name="cmd" value="_cart" />' +
+                        '<input type="hidden" name="add" value="1" />' +
+                        '<input type="hidden" name="business" value=" " />' +
+                        '<input type="hidden" name="item_name" value="' + phoneName + '" />' +
+                        '<input type="hidden" name="amount" value="' + price + '" />' +
+                        '<input type="hidden" name="discount_amount" value="' + discount + '" />' +
+                        '<input type="hidden" name="currency_code" value="CNY" />' +
+                        '<input type="hidden" name="return" value=" " />' +
+                        '<input type="hidden" name="cancel_return" value=" " />' +
+                        '<input type="submit" name="submit" value="Add to Cart" class="button" />' +
+                        '</fieldset>' +
+                        '</form>' +
+                        '</div>' +
+                        '</div>' +
+                        '</figure>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>';
+
+                    $("#phoneList").append(contentStr);
+                }
+            }
+            $(document).ready(function() {
+                var phoneList = [{
+                    id: 123,
+                    name: "product1",
+                    price: 2299,
+                    discount: 400,
+                    isOffer: 0
+                }, {
+                    id: 224,
+                    name: "product2",
+                    price: 4299,
+                    discount: 700,
+                    isOffer: 0
+                }, {
+                    id: 225,
+                    name: "product3",
+                    price: 2899,
+                    discount: 400,
+                    isOffer: 1
+                }, {
+                    id: 226,
+                    name: "product4",
+                    price: 1699,
+                    discount: 400,
+                    isOffer: 1
+                }];
+
+                //              constructProductDom(phoneList);
+
+                $.ajax({
+                    type: 'GET',
+                    url: "/product/searchAll",
+                    success: function a(data) {
+                        constructProductDom(data);
+                    },
+                    contentType: "application/json",
+                    async: false
+                })
+                // Mini Cart
+                paypal.minicart.render();
+                paypal.minicart.cart.on('checkout', function(evt) {
+                    evt.preventDefault();
+                    buyAllSelect();
+                });
+
+            });
+
+            function onSearchByName() {
+                var searchText = $("#searchProduct").val();
+                if(searchText === "Search") {
+                    return;
+                }
+                $.get("/product/search?productName=" + searchText, function(data) {
+                    console.log(data);
+                    //                  $("#phoneList").empty();
+
+                    if(data !== null && data !== undefined && data.length > 0) {
+                        //                      constructProductDom(data);
+                        var idArr = [];
+                        for(var i = 0; i < data.length; i++) {
+                            var divId = "product_" + data[i].id;
+                            $("#" + divId).show();
+                            idArr.push(data[i].id);
+                        }
+
+                        var keys = Object.keys(prodectName2Id);
+                        for(var i = 0; i < keys.length; i++) {
+                            var key = keys[i];
+                            var productId = prodectName2Id[key];
+
+                            if(idArr.indexOf(productId) === -1) {
+                                var divId = "product_" + productId;
+                                $("#" + divId).hide();
+                            }
+                        }
+
+                    } else {
+                        var keys = Object.keys(prodectName2Id);
+                        for(var i = 0; i < keys.length; i++) {
+                            var key = keys[i];
+                            var productId = prodectName2Id[key];
+                            var divId = "product_" + productId;
+                            $("#" + divId).hide();
+                        }
+                    }
+
+                })
+
+            }
+
+            function buyAllSelect() {;
+                console.log(paypal.minicart.cart.items());
+                var idList = [];
+                var itemArray = paypal.minicart.cart.items();
+                for(var i = 0; i < itemArray.length; i++) {
+                    var id = prodectName2Id[itemArray[i]._data.item_name];
+                    idList.push(id);
+                }
+
+                $.ajax({
+                    type: 'POST',
+                    url: "/product/buy/0",
+                    data: JSON.stringify({
+                        user: userinfo,
+                        productidList: idList
+                    }),
+                    success: function a(data) {
+                        console.log(data);
+                        paypal.minicart.cart.destroy();
+                        toastr.success('Purchase Successful!');
+                    },
+                    error: function() {
+                        toastr.error("Request Failure!");
+                    },
+                    contentType: "application/json",
+                    async: true
+                });
+            }
+
+            //          window.onbeforeunload = function(e) {
+            //              window.localStorage.removeItem("demologin");
+            //          };
+        </script>
+
+        <!--<div class="container">-->
+        <!-- Trigger the modal with a button -->
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="w3_login">
+                <div class="w3_login_module">
+                    <div class="module form-module">
+                        <div class="toggle" onclick="onClkHideLogin()"><i class="fa fa-times"></i>
+                        </div>
+                        <div class="form">
+                            <h2>Sign In</h2>
+                            <input id="username" type="text" name="Username" placeholder="Username" required=" ">
+                            <input id="paasword" type="password" name="Password" placeholder="Password" required=" ">
+                            <input type="submit" value="Login" onclick="onClkSubmit()">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!--</div>-->
+
+        <script>
+            function onClkHideLogin() {
+                $('#myModal').modal('hide');
+            }
+        </script>
+
+        <!--<script>
+            $(document).ready(function() {
+                $('#switch-animate').on('switchChange.bootstrapSwitch', function(event, state) {
+                    console.log(this); // DOM element  
+                    console.log(event); // jQuery event  
+                    console.log(state); // true | false  
+                    //alert("aaa");
+                });
+            });
+        </script>-->
+
+        <script>
+            function onClkSettingAuto() {
+                $('#autoDlg').modal();
+                setTimeout(function() {
+                    var checkAll = true;
+                    for(var id in AUTO_OPR) {
+                        if(AUTO_OPR[id].open) {
+                            $('#' + id + "_open").prop("checked", true);
+                        } else {
+                            $('#' + id + "_open").prop("checked", false);
+                            checkAll = false;
+                        }
+
+                        $("#" + id + " .period-show").text(AUTO_OPR[id].period);
+                    }
+                    if(checkAll) {
+                        $("#all_open").prop("checked", true);
+                    } else {
+                        $("#all_open").prop("checked", false);
+                    }
+                }, 0)
+            }
+            var AUTO_OPR = {
+                autoLogin: {
+                    open: true,
+                    period: 60,
+                    type: "post",
+                    url: "/user/login"
+                },
+                autoBuy: {
+                    open: true,
+                    period: 60,
+                    type: "post",
+                    url: "/product/buy/0"
+                },
+                autoSearch: {
+                    open: true,
+                    period: 60,
+                    type: "get",
+                    url: "/product/search?productName="
+                },
+                autoSearchAll: {
+                    open: true,
+                    period: 60,
+                    type: "get",
+                    url: "/product/searchAll"
+                }
+            }
+            $(document).ready(function() {
+
+                $.ajax({
+                    type: 'GET',
+                    url: "/autotest/get",
+                    success: function a(data) {
+                        var keys = Object.keys(data);
+                        for(var i = 0; i < keys.length; i++) {
+                            var key = keys[i];
+                            switch(key) {
+                                case "/user/login":
+                                    {
+                                        AUTO_OPR.autoLogin.open = data[key].testSwitch === 1 ? true : false;
+                                        AUTO_OPR.autoLogin.period = data[key].period;
+                                    }
+                                    break;
+                                case "/product/buy":
+                                    {
+                                        AUTO_OPR.autoBuy.open = data[key].testSwitch === 1 ? true : false;
+                                        AUTO_OPR.autoBuy.period = data[key].period;
+                                    }
+                                    break;
+                                case "/product/search":
+                                    {
+                                        AUTO_OPR.autoSearch.open = data[key].testSwitch === 1 ? true : false;
+                                        AUTO_OPR.autoSearch.period = data[key].period;
+                                    }
+                                    break;
+                                case "/product/searchAll":
+                                    {
+                                        AUTO_OPR.autoSearchAll.open = data[key].testSwitch === 1 ? true : false;
+                                        AUTO_OPR.autoSearchAll.period = data[key].period;
+                                    }
+                                    break;
+                            }
+                        }
+                    },
+                    contentType: "application/json",
+                    async: false
+                })
+
+                $("#autoLogin .period-input").blur(function() {
+                    $("#autoLogin .period-show").text($("#autoLogin .period-input").val() || $("#autoLogin .period-show").text());
+                    inputBlur("autoLogin");
+                });
+                $("#autoBuy .period-input").blur(function() {
+                    $("#autoBuy .period-show").text($("#autoBuy .period-input").val() || $("#autoBuy .period-show").text());
+                    inputBlur("autoBuy");
+                });
+                $("#autoSearch .period-input").blur(function() {
+                    $("#autoSearch .period-show").text($("#autoSearch .period-input").val() || $("#autoSearch .period-show").text());
+                    inputBlur("autoSearch");
+                });
+                $("#autoSearchAll .period-input").blur(function() {
+                    $("#autoSearchAll .period-show").text($("#autoSearchAll .period-input").val() || $("#autoSearchAll .period-show").text());
+                    inputBlur("autoSearchAll");
+                });
+                $("#all .period-input").blur(function() {
+                    $("#all .period-show").text($("#all .period-input").val() || $("#all .period-show").text());
+                    inputBlur("all");
+                    var value = $("#all .period-show").text();
+                    for(var id in AUTO_OPR) {
+                        $("#" + id + " .period-show").text(value);
+                        AUTO_OPR[id].period = value;
+                    }
+                });
+                for(var id in AUTO_OPR) {
+                    $("#" + id + " .period-input").hide();
+                    $('#' + id + "_open").bootstrapSwitch('destroy');
+                    $('#' + id + "_open").prop("checked", true);
+                    switch(id) {
+                        case "autoLogin":
+                            setIntervalLogin();
+                            break;
+                        case "autoBuy":
+                            setIntervalBuy();
+                            break;
+                        case "autoSearch":
+                            setIntervalSearch();
+                            break;
+                        case "autoSearchAll":
+                            setIntervalSearchAll();
+                            break;
+                    }
+                }
+                $("#all_open").bootstrapSwitch('destroy');
+            });
+
+            function editClk(id) {
+                $("#" + id + " .period-show").hide();
+                $("#" + id + " .period-edit").hide();
+                $("#" + id + " .period-input").show();
+                document.getElementById(id + "_input").focus();
+                var period = $("#" + id + " .period-show").text();
+                $("#" + id + "_input").val(period);
+            }
+
+            function inputBlur(id) {
+                $("#" + id + " .period-show").show();
+                $("#" + id + " .period-edit").show();
+                $("#" + id + " .period-input").hide();
+            }
+
+            function onClkHideAuto() {
+                $('#autoDlg').modal("hide");
+            }
+            var login_timer, buy_timer, search_timer, searchAll_timer;
+
+            function clearOldTimer() {
+                var timers = [login_timer, buy_timer, search_timer, searchAll_timer];
+                for(i = 0; i < timers.length; i++) {
+                    if(timers[i]) {
+                        clearInterval(timers[i]);
+                    }
+                }
+            }
+
+            function onClkCofirmAuto() {
+                clearOldTimer();
+                var autestMap = {};
+                for(var id in AUTO_OPR) {
+                    AUTO_OPR[id].open = $("#" + id + "_open").prop("checked");
+                    AUTO_OPR[id].period = $("#" + id + " .period-show").text();
+                    switch(id) {
+                        case "autoLogin":
+                            {
+                                if(AUTO_OPR[id].open) {
+                                    autestMap["/user/login"] = {
+                                        testSwitch: 1,
+                                        period: parseInt(AUTO_OPR[id].period)
+                                    };
+
+                                } else {
+                                    autestMap["/user/login"] = {
+                                        testSwitch: 0,
+                                        period: parseInt(AUTO_OPR[id].period)
+                                    };
+                                }
+
+                                setIntervalLogin();
+                            }
+
+                            break;
+                        case "autoBuy":
+                            {
+
+                                if(AUTO_OPR[id].open) {
+                                    autestMap["/product/buy"] = {
+                                        testSwitch: 1,
+                                        period: parseInt(AUTO_OPR[id].period)
+                                    };
+
+                                } else {
+                                    autestMap["/product/buy"] = {
+                                        testSwitch: 0,
+                                        period: parseInt(AUTO_OPR[id].period)
+                                    };
+                                }
+
+                                setIntervalBuy();
+                            }
+
+                            break;
+                        case "autoSearch":
+                            {
+
+                                if(AUTO_OPR[id].open) {
+                                    autestMap["/product/search"] = {
+                                        testSwitch: 1,
+                                        period: parseInt(AUTO_OPR[id].period)
+                                    };
+
+                                } else {
+                                    autestMap["/product/search"] = {
+                                        testSwitch: 0,
+                                        period: parseInt(AUTO_OPR[id].period)
+                                    };
+                                }
+
+                                setIntervalSearch();
+                            }
+
+                            break;
+                        case "autoSearchAll":
+                            {
+
+                                if(AUTO_OPR[id].open) {
+                                    autestMap["/product/searchAll"] = {
+                                        testSwitch: 1,
+                                        period: parseInt(AUTO_OPR[id].period)
+                                    };
+
+                                } else {
+                                    autestMap["/product/searchAll"] = {
+                                        testSwitch: 0,
+                                        period: parseInt(AUTO_OPR[id].period)
+                                    };
+                                }
+                                setIntervalSearchAll();
+                            }
+
+                            break;
+                    }
+                }
+                $('#autoDlg').modal("hide");
+
+                $.ajax({
+                    type: 'POST',
+                    url: "/autotest/set",
+                    data: JSON.stringify({
+                        confMap: autestMap
+                    }),
+                    success: function a(data) {
+                        console.log(data);
+                        //                      paypal.minicart.cart.destroy();
+                        toastr.success('Configuration Changed!');
+                    },
+                    contentType: "application/json",
+                    async: true
+                });
+            }
+
+            function setIntervalLogin() {
+                login_timer = setInterval(function() {
+                    if(!AUTO_OPR["autoLogin"].open) {
+                        return;
+                    }
+                    var reqdata = {
+                        "id": 0,
+                        "name": "apm",
+                        "password": "123456"
+                    }
+                    //                  ajaxPostFunc("/user/login", reqdata);
+                }, AUTO_OPR["autoLogin"].period * 1000);
+            }
+
+            function setIntervalBuy() {
+                buy_timer = setInterval(function() {
+                    if(!AUTO_OPR["autoBuy"].open) {
+                        return;
+                    }
+                    var reqdata = {
+                        user: {
+                            id: 0,
+                            name: "apm",
+                            password: "123456"
+                        },
+                        productidList: [1, 2]
+                    }
+                    //                  ajaxPostFunc("/product/buy/0", reqdata);
+                }, AUTO_OPR["autoBuy"].period * 1000);
+            }
+
+            function setIntervalSearch() {
+                search_timer = setInterval(function() {
+                    if(!AUTO_OPR["autoSearch"].open) {
+                        return;
+                    }
+                    //                  ajaxGetFunc("/product/search?productName=");
+                }, AUTO_OPR["autoSearch"].period * 1000);
+            }
+
+            function setIntervalSearchAll() {
+                searchAll_timer = setInterval(function() {
+                    if(!AUTO_OPR["autoSearchAll"].open) {
+                        return;
+                    }
+                    //                  ajaxGetFunc("/product/searchAll");
+                }, AUTO_OPR["autoSearchAll"].period * 1000);
+            }
+
+            function ajaxGetFunc(url) {
+                $.get(url + "", function(data) {
+                    console.log(data);
+                })
+            }
+
+            function ajaxPostFunc(url, reqdata) {
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: JSON.stringify(reqdata),
+                    success: function a(data) {
+                        console.log(data)
+                    },
+                    contentType: "application/json",
+                    async: true
+                })
+            }
+
+            function onkeyupClk(id) {
+                var value = $("#" + id).val();
+                value = value.replace(/\D/g, '');
+                if(parseInt(value) > 600) {
+                    $('#' + id).popover('show');
+                    value = (value - value % 10) / 10;
+                }
+                $("#" + id).val(value);
+                setTimeout(function() {
+                    $('#' + id).popover('hide');
+                }, 3000)
+            }
+
+            function checkOpenInput(cId) {
+                //全选
+                if(cId === "all") {
+                    for(var id in AUTO_OPR) {
+                        if($("#all_open").prop("checked")) {
+                            $("#" + id + "_open").prop("checked", true);
+                        } else {
+                            $("#" + id + "_open").prop("checked", false);
+                        }
+                    }
+                } else {
+                    var isAllCheck = true;
+                    for(var id in AUTO_OPR) {
+                        var checked = $("#" + id + "_open").prop("checked");
+                        if(!checked) {
+                            isAllCheck = false;
+                        }
+                    }
+                    if(isAllCheck) {
+                        $("#all_open").prop("checked", true);
+                    } else {
+                        $("#all_open").prop("checked", false);
+                    }
+                }
+            }
+        </script>
+        <style>
+            #autoLogin td {
+                vertical-align: middle;
+                height: 60px;
+            }
+            
+            #autoBuy td {
+                vertical-align: middle;
+                height: 60px;
+            }
+            
+            #autoSearch td {
+                vertical-align: middle;
+                height: 60px;
+            }
+            
+            #autoSearchAll td {
+                vertical-align: middle;
+                height: 60px;
+            }
+            
+            .period-edit {
+                margin-left: 10px;
+                cursor: pointer;
+            }
+            
+            .period-show {
+                font-size: 14px;
+            }
+            
+            .auto-footer {
+                width: 100%;
+                height: 50px;
+                margin-top: -20px;
+                line-height: 50px;
+            }
+            
+            .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-primary,
+            .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-primary {
+                background: #FA1818;
+            }
+            
+            .btn-primary {
+                background: #84C639;
+                border-color: #84C639;
+            }
+            
+            .btn-primary:hover {
+                background: #FA1818;
+                border-color: #FA1818;
+            }
+            
+            .btn-primary:active {
+                background: #FA1818;
+                border-color: #FA1818;
+            }
+        </style>
+        <div class="modal fade" id="autoDlg" role="dialog">
+            <div class="w3_login">
+                <div class="w3_login_module">
+                    <div class="module form-module" style="max-width:800px;">
+                        <div class="toggle" onclick="onClkHideAuto()"><i class="fa fa-times"></i>
+                        </div>
+                        <table class="table table-hover" style="width:800px;margin-left:auto;margin-right:auto;">
+                            <thead>
+                                <tr style="height: 60px;">
+                                    <th>
+                                        <span>Operation</span>
+                                    </th>
+                                    <th>
+                                        <span style="float:left;display:inline-block;">Enable</span>
+                                        <span style="float:left;display:inline-block;margin-left:5px;">
+                                            <input id="all_open" onclick="checkOpenInput('all')" type="checkbox"></input>
+                                        </span>
+                                    </th>
+                                    <th style="width:240px;" id="all">
+                                        <span>Trigger interval(second)</span>
+                                        <span class="period-show">20</span><span class="period-edit" onclick="editClk('all')"><img src="./images/edit.png"/></span>
+                                        <input id="all_input" style="width:100px;display:none;" ata-container="body" data-toggle="popover" data-placement="right" data-content="Maximum 600 seconds" class="period-input" onkeyup="onkeyupClk('all_input')"></input>
+                                    </th>
+                                    <th>URL</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr id="autoLogin">
+                                    <td>Login</td>
+                                    <td>
+                                        <input id="autoLogin_open" onclick="checkOpenInput('autoLogin')" type="checkbox"></input>
+                                    </td>
+                                    <td>
+                                        <span class="period-show">60</span><span class="period-edit" onclick="editClk('autoLogin')"><img src="./images/edit.png"/></span>
+                                        <input id="autoLogin_input" ata-container="body" data-toggle="popover" data-placement="right" data-content="Maximum 600 seconds" class="period-input" onkeyup="onkeyupClk('autoLogin_input')"></input>
+                                    </td>
+                                    <td>/user/login</td>
+                                    <td>Slow transaction: latency is 1s</td>
+                                </tr>
+                                <tr id="autoBuy">
+                                    <td>Buy</td>
+                                    <td>
+                                        <input id="autoBuy_open" onclick="checkOpenInput('autoBuy')" type="checkbox"></input>
+                                    </td>
+                                    <td>
+                                        <span class="period-show">12</span><span class="period-edit" onclick="editClk('autoBuy')"><img src="./images/edit.png"/></span>
+                                        <input id="autoBuy_input" data-toggle="popover" data-placement="right" data-content="Maximum 600 seconds" class="period-input" onkeyup="onkeyupClk('autoBuy_input')"></input>
+                                    </td>
+                                    <td>/product/buy</td>
+                                    <td>Error transaction：Error rate is 20%</td>
+                                </tr>
+                                <tr id="autoSearch">
+                                    <td>Search by Name</td>
+                                    <td>
+                                        <input id="autoSearch_open" onclick="checkOpenInput('autoSearch')" type="checkbox">
+                                    </td>
+                                    <td>
+                                        <span class="period-show">10</span><span class="period-edit" onclick="editClk('autoSearch')"><img src="./images/edit.png"/></span>
+                                        <input id="autoSearch_input" data-toggle="popover" data-placement="right" data-content="Maximum 600 seconds" class="period-input" onkeyup="onkeyupClk('autoSearch_input')"></input>
+                                    </td>
+                                    <td>/product/search</td>
+                                    <td></td>
+                                </tr>
+                                <tr id="autoSearchAll">
+                                    <td>Search All</td>
+                                    <td>
+                                        <input id="autoSearchAll_open" onclick="checkOpenInput('autoSearchAll')" type="checkbox">
+                                    </td>
+                                    <td>
+                                        <span class="period-show">2</span><span class="period-edit" onclick="editClk('autoSearchAll')"><img src="./images/edit.png"/></span>
+                                        <input id="autoSearchAll_input" data-toggle="popover" data-placement="right" data-content="Maximum 600 seconds" class="period-input" onkeyup="onkeyupClk('autoSearchAll_input')"></input>
+                                    </td>
+                                    <td>/product/searchAll</td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="auto-footer">
+                            <button type="button" onclick="onClkCofirmAuto()" style="float:right;margin-right:20px;margin-top:10px;width:60px;" class="btn btn-primary">OK</button>
+                            <button type="button" onclick="onClkHideAuto()" style="float:right;margin-right:20px;margin-top:10px;width:60px;" class="btn btn-default">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </body>
+
+</html>
